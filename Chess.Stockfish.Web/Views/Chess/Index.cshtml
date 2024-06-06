@@ -1,0 +1,39 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div class="text-center">
+    <div id="myBoard" style="width: 400px; text-align: center"></div>
+</div>
+
+
+
+
+<script>
+    function onChange(oldPos, newPos) {
+        console.log('Position changed:')
+        console.log('Old position: ' + Chessboard.objToFen(oldPos))
+        console.log('New position: ' + Chessboard.objToFen(newPos))
+        console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+    }
+
+    $(function () {
+        console.log("ready!");
+
+        var config = {
+            draggable: true,
+            dropOffBoard: 'snapback', // this is the default
+            onChange : onChange,
+            position: 'start'
+        }
+        var board = Chessboard('myBoard', config);
+    });
+</script>

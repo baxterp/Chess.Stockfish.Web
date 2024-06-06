@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess.Stockfish.Web", "Chess.Stockfish.Web\Chess.Stockfish.Web.csproj", "{0A5BCF70-EC5E-43AD-9AC0-9DB5D5689817}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stockfish.NET", "Stockfish.NET\Stockfish.NET.csproj", "{5DB35857-0423-4E0F-B6EE-59117E55EDAD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stockfish.NET.Tests", "Stockfish.NET.Tests\Stockfish.NET.Tests.csproj", "{F3296221-BC13-4A0C-B0D6-620671204C60}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess.StockfishPlayer.Web", "Chess.StockfishPlayer.Web\Chess.StockfishPlayer.Web.csproj", "{4D7BB079-6C5C-42E7-B3EB-36504C926B50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0A5BCF70-EC5E-43AD-9AC0-9DB5D5689817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0A5BCF70-EC5E-43AD-9AC0-9DB5D5689817}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0A5BCF70-EC5E-43AD-9AC0-9DB5D5689817}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0A5BCF70-EC5E-43AD-9AC0-9DB5D5689817}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DB35857-0423-4E0F-B6EE-59117E55EDAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DB35857-0423-4E0F-B6EE-59117E55EDAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DB35857-0423-4E0F-B6EE-59117E55EDAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DB35857-0423-4E0F-B6EE-59117E55EDAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3296221-BC13-4A0C-B0D6-620671204C60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3296221-BC13-4A0C-B0D6-620671204C60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3296221-BC13-4A0C-B0D6-620671204C60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3296221-BC13-4A0C-B0D6-620671204C60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D7BB079-6C5C-42E7-B3EB-36504C926B50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D7BB079-6C5C-42E7-B3EB-36504C926B50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D7BB079-6C5C-42E7-B3EB-36504C926B50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D7BB079-6C5C-42E7-B3EB-36504C926B50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
