@@ -1,0 +1,6 @@
+@Chess.Stockfish.Web_HostAddress = http://localhost:5092
+
+GET {{Chess.Stockfish.Web_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
