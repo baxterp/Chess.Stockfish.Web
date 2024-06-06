@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Chess.Stockfish.WebClient.Pages
+namespace Chess.Stockfish.Web.Pages
 {
     public class PrivacyModel : PageModel
     {
