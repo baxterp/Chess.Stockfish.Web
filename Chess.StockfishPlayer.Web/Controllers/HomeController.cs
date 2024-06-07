@@ -5,35 +5,60 @@ using Stockfish.NET.Models;
 using Stockfish.NET.Core;
 using Stockfish.NET;
 using System.IO;
+using Chess.StockfishPlayer.Web.Helpers;
+using System.Net;
 
 
 namespace Chess.StockfishPlayer.Web.Controllers
 {
+    
     public class HomeController : Controller
     {
-        private IStockfish Stockfish { get; set; }
-
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private StockfishHelper stockfishHelper { get; set; }
+        public HomeController()
         {
-            _logger = logger;
+            stockfishHelper = new StockfishHelper();
         }
 
+        [Route("")]
         public IActionResult Index()
         {
-            var currentDirectory = Directory.GetCurrentDirectory();
-            var path = currentDirectory +"\\BinaryFiles\\stockfish_20090216_x64.exe";
-
-            Stockfish = new Stockfish.NET.Core.Stockfish(path, depth: 2);
-
             return View();
         }
 
-        public IActionResult Privacy()
+        [HttpPost]
+        [Route("StartGame")]
+        public IActionResult StartGame([FromBody] string difficulty)
         {
+            stockfishHelper.StartGame(int.Parse(difficulty));
             return View();
         }
+
+
+        [HttpPost]
+        [Route("MakeMoveWithTest")]
+        public IActionResult MakeMoveWithTest([FromBody] string moveString)
+        {
+            var result = stockfishHelper.MakeMove(moveString);
+
+            if (!string.IsNullOrEmpty(result))
+                return Json(result);
+            else
+                return Json(null);
+        }
+
+        [HttpPost]
+        [Route("MakeMoveWithFEN")]
+        public IActionResult MakeMoveWithFEN([FromBody] string fenString)
+        {
+            var result = stockfishHelper.MakeMoveWithFEN(fenString);
+
+            if (!string.IsNullOrEmpty(result))
+                return Json(result);
+            else
+                return Json(null);
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
