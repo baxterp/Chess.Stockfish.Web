@@ -31,7 +31,7 @@ namespace Chess.StockfishPlayer.Web.Controllers
         public IActionResult StartGame([FromBody] string difficulty)
         {
             stockfishHelper.StartGame(int.Parse(difficulty));
-            return View();
+            return Json(200);
         }
 
 

@@ -1,67 +1,83 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Chess for grandmasters";
 }
+<div id="divOverlay">
+    <div class="text-center">
+        <h1 class="display-4">Stockfish Chess</h1>
+        <p>Play chess against the well renoud Stockfish chess engine.</p>
+    </div>
 
-<div class="text-center">
-    <h1 class="display-4">Stockfish Chess</h1>
-    <p>Play chess against the well renoud Stockfish chess engine.</p>
-</div>
+    <div class="d-flex justify-content-center">
+        <button id="btnStart" type="button" onclick="StartGame()" class="p-2 btn btn-primary">Start Game</button>
+    </div>
 
-<div class="d-flex justify-content-center">
-    <button type="button" onclick="StartGame()" class="p-2 btn btn-primary">Start Game</button>
-</div>
-
-<div class="d-flex justify-content-center">
-    <div class="p-2 dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Select difficulty
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="javascript:ItemSelected('10')">Easy</a>
-            <a class="dropdown-item" href="javascript:ItemSelected('20')">Medium</a>
-            <a class="dropdown-item" href="javascript:ItemSelected('30')">Hard</a>
+    <div class="d-flex justify-content-center">
+        <div class="p-2 dropdown">
+            <button id="dropdownMenuButton" class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Select difficulty
+            </button>
+            <div id="dropdownMenu" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="javascript:ItemSelected('10')">Easy</a>
+                <a class="dropdown-item" href="javascript:ItemSelected('20')">Medium</a>
+                <a class="dropdown-item" href="javascript:ItemSelected('30')">Hard</a>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="d-flex justify-content-center">
-    <div id="myBoard" class="p-2" style="width: 600px;"></div>
-</div>
+    <div class="d-flex justify-content-center">
+        <div id="myBoard" class="p-2" style="width: 600px;"></div>
+    </div>
 
-<div class="d-flex justify-content-center">
-    <div id="divMessage" class="text-lg-left">Difficulty : Easy</div>
+    <div class="d-flex justify-content-center">
+        <div id="divMessage" class="text-lg-left">Difficulty : Easy</div>
+    </div>
 </div>
-
 <script>
     var board;
     var userMove = false;
     var game = new Chess();
     var difficulty = 10;
+    var gameStarted = false;
 
     $('.dropdown').click(function () {
-        $('.dropdown-menu').toggleClass('show');
+        if(!gameStarted) $('.dropdown-menu').toggleClass('show');
     });
+
+    function HideOverlay() {
+        $("#divOverlay").LoadingOverlay("hide");
+    }
+
+    function ShowOverlay(message) {
+        $("#divOverlay").LoadingOverlay("show",{
+            text: message,
+        });
+    }
+
+    function DisableControls() {
+        $('#dropdownMenuButton').toggleClass('disabled');
+        $('#btnStart').toggleClass('disabled');
+        $('#btnStart').prop("disabled", true);
+        gameStarted = true;
+    }
 
     function StartGame() {
 
-        if (difficulty == 10)
-            $('#divMessage').innerHTML = 'Difficulty : Easy';
-        else if (difficulty == 20)
-            $('#divMessage').innerHTML = 'Difficulty : Medium';
-        else if (difficulty == 30)
-            $('#divMessage').innerHTML = 'Difficulty : Hard';
-
         console.log('Start game');
+        DisableControls();
+        ShowOverlay('Loading...');
+
         var config = {
             draggable: true,
             dropOffBoard: 'snapback',
             onDrop: onDrop,
-            position: 'start'
+            position: 'start',
+            showNotation: false,
         }
         board = Chessboard('myBoard', config);
 
+        console.log('Difficulty: ' + difficulty);
         const jsonData = {
-            difficulty: difficulty
+            difficulty: difficulty.toString()
         };
 
         fetch('/StartGame', {
@@ -74,13 +90,20 @@
         })
         .then(res => res.json())
         .then(function (data) {
-
+            HideOverlay();
         })
+        
     }
 
-    function ItemSelected(difficulty) {
-        this.difficulty = difficulty;
-        console.log(difficulty);
+    function ItemSelected(difficultyIN) {
+        difficulty = difficultyIN;
+
+        if (difficulty == 10)
+            $('#divMessage').html('Difficulty : Easy');
+        else if (difficulty == 20)
+            $('#divMessage').html('Difficulty : Medium');
+        else if (difficulty == 30)
+            $('#divMessage').html('Difficulty : Hard');
     }
 
     function onDrop(source, target, piece, newPos, oldPos, orientation) {
@@ -126,6 +149,7 @@
             fenString: newPosition
         };
 
+        ShowOverlay('Stockfish thinking...');
         fetch('/MakeMoveWithFEN', {
             method: 'POST',
             headers: {
@@ -153,7 +177,7 @@
 
                 console.log('computer move');
                 console.log(move);
-
+                HideOverlay();
             }
             else {
                 console.log('Reverse Move');
@@ -211,13 +235,8 @@
 
     $(function () {
         console.log("ready!");
+        difficulty = 10;
 
-        // var config = {
-        //     draggable: true,
-        //     dropOffBoard: 'snapback',
-        //     onDrop: onDrop,
-        //     position: 'start'
-        // }
-        board = Chessboard('myBoard');
+        board = Chessboard('myBoard'); // Empty chess board
     });
 </script>
