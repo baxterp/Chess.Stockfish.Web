@@ -2,241 +2,55 @@
     ViewData["Title"] = "Chess for grandmasters";
 }
 <div id="divOverlay">
-    <div class="text-center">
-        <h1 class="display-4">Stockfish Chess</h1>
-        <p>Play chess against the well renoud Stockfish chess engine.</p>
-    </div>
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-6">
+                <div class="text-center">
+                    <h1 class="display-4">Stockfish Chess</h1>
+                    <p class="h5">Play chess against the famous Stockfish chess engine, which can analyse over 1 million moves per second. You are playing white. Good luck. If you win a prize will be sent to your home address.</p>
+                </div>
 
-    <div class="d-flex justify-content-center">
-        <button id="btnStart" type="button" onclick="StartGame()" class="p-2 btn btn-primary">Start Game</button>
-    </div>
+                <div class="container p-3 my-3 bg-primary bg-opacity-25 text-white" style="width:220px;border-radius:10px">
 
-    <div class="d-flex justify-content-center">
-        <div class="p-2 dropdown">
-            <button id="dropdownMenuButton" class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Select difficulty
-            </button>
-            <div id="dropdownMenu" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="javascript:ItemSelected('10')">Easy</a>
-                <a class="dropdown-item" href="javascript:ItemSelected('20')">Medium</a>
-                <a class="dropdown-item" href="javascript:ItemSelected('30')">Hard</a>
+                    <div class="d-flex justify-content-center">
+                        <div class="h4" style="padding-bottom:10px; color:#36454F">Play a game</div>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <button id="btnStart" type="button" onclick="StartGame()" class="p-2 btn btn-primary">Start Game</button>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <div class="p-2 dropdown">
+                            <button id="dropdownMenuButton" class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Select difficulty
+                            </button>
+                            <div id="dropdownMenu" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="javascript:ItemSelected('5')">Easy</a>
+                                <a class="dropdown-item" href="javascript:ItemSelected('10')">Medium</a>
+                                <a class="dropdown-item" href="javascript:ItemSelected('20')">Hard</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <div id="divMessage" class="h5" style="color:#36454F; padding-top:8px">Difficulty : Easy</div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row justify-content-md-center">
+@*                         <div class="col-sm-2 col-md-2 col-lg-2">
+                        </div> *@
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <div id="myBoard" class="p-2" style="width:100%;"></div>
+                        </div>
+@*                         <div class="col-sm-2 col-md-2 col-lg-2">
+                        </div> *@
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="d-flex justify-content-center">
-        <div id="myBoard" class="p-2" style="width: 600px;"></div>
-    </div>
-
-    <div class="d-flex justify-content-center">
-        <div id="divMessage" class="text-lg-left">Difficulty : Easy</div>
-    </div>
 </div>
-<script>
-    var board;
-    var userMove = false;
-    var game = new Chess();
-    var difficulty = 10;
-    var gameStarted = false;
-
-    $('.dropdown').click(function () {
-        if(!gameStarted) $('.dropdown-menu').toggleClass('show');
-    });
-
-    function HideOverlay() {
-        $("#divOverlay").LoadingOverlay("hide");
-    }
-
-    function ShowOverlay(message) {
-        $("#divOverlay").LoadingOverlay("show",{
-            text: message,
-        });
-    }
-
-    function DisableControls() {
-        $('#dropdownMenuButton').toggleClass('disabled');
-        $('#btnStart').toggleClass('disabled');
-        $('#btnStart').prop("disabled", true);
-        gameStarted = true;
-    }
-
-    function StartGame() {
-
-        console.log('Start game');
-        DisableControls();
-        ShowOverlay('Loading...');
-
-        var config = {
-            draggable: true,
-            dropOffBoard: 'snapback',
-            onDrop: onDrop,
-            position: 'start',
-            showNotation: false,
-        }
-        board = Chessboard('myBoard', config);
-
-        console.log('Difficulty: ' + difficulty);
-        const jsonData = {
-            difficulty: difficulty.toString()
-        };
-
-        fetch('/StartGame', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(jsonData.difficulty)
-        })
-        .then(res => res.json())
-        .then(function (data) {
-            HideOverlay();
-        })
-        
-    }
-
-    function ItemSelected(difficultyIN) {
-        difficulty = difficultyIN;
-
-        if (difficulty == 10)
-            $('#divMessage').html('Difficulty : Easy');
-        else if (difficulty == 20)
-            $('#divMessage').html('Difficulty : Medium');
-        else if (difficulty == 30)
-            $('#divMessage').html('Difficulty : Hard');
-    }
-
-    function onDrop(source, target, piece, newPos, oldPos, orientation) {
-
-        if (piece.search(/b/) !== -1) {
-            return 'snapback'
-        }
-
-        var move = game.move({
-            from: source,
-            to: target,
-            promotion: 'q' // NOTE: always promote to a queen for example simplicity
-        })
-
-        console.log('user move');
-        console.log(move);
-
-        if (move === null) 
-            return 'snapback';
-
-        var oldPosition = Chessboard.objToFen(oldPos);
-        var newPosition = Chessboard.objToFen(newPos);
-        var snapBack = false;
-
-        if (oldPosition == newPosition)
-            return false;
-
-        var testPosition = source + target;
-        var reversePosition = target + "-" + source;
-
-        // console.log('Position changed:');
-        // console.log('Source: ' + source)
-        // console.log('Target: ' + target)
-        // console.log('Piece: ' + piece)
-        // console.log('New position: ' + Chessboard.objToFen(newPos))
-        // console.log('Old position: ' + Chessboard.objToFen(oldPos))
-        // console.log('Orientation: ' + orientation)
-        // console.log('testPosition: ' + testPosition)
-        // console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-
-
-        const jsonData = {
-            fenString: newPosition
-        };
-
-        ShowOverlay('Stockfish thinking...');
-        fetch('/MakeMoveWithFEN', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(jsonData.fenString)
-        })
-        .then(res => res.json())
-        .then(function (data) {
-            if (data != null) {
-                console.log('Computer Move: ' + data);
-                board.move(data);
-
-                var moveFrom = data.substring(0, 2);
-                var moveTo = data.substring(3);
-                console.log('Move from: ' + moveFrom);
-                console.log('Move to: ' + moveTo);
-
-                move = game.move({
-                    from: moveFrom,
-                    to: moveTo
-                    //promotion: 'q'
-                });
-
-                console.log('computer move');
-                console.log(move);
-                HideOverlay();
-            }
-            else {
-                console.log('Reverse Move');
-                board.move(reversePosition);
-            }
-        })
-
-
-
-
-
-
-
-
-
-        // const jsonData = {
-        //     moveString: testPosition
-        // };
-
-        // fetch('/MakeMoveWithTest', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(jsonData.moveString)
-        // })
-        // .then(res => res.json())
-        // .then(function (data) {
-        //     if (data != null) {
-        //         console.log('Computer Move: ' + data);
-        //         board.move(data);
-
-        //         var moveFrom = data.substring(0, 2);
-        //         var moveTo = data.substring(3);
-        //         console.log('Move from: ' + moveFrom);
-        //         console.log('Move to: ' + moveTo);
-
-        //         move = game.move({
-        //             from: moveFrom,
-        //             to: moveTo
-        //             //promotion: 'q'
-        //         });
-
-        //         console.log('computer move');
-        //         console.log(move);
-
-        //     }
-        //     else {
-        //         console.log('Reverse Move');
-        //         board.move(reversePosition);
-        //     }
-        // })
-    }
-
-    $(function () {
-        console.log("ready!");
-        difficulty = 10;
-
-        board = Chessboard('myBoard'); // Empty chess board
-    });
-</script>

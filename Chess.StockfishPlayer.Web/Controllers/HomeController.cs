@@ -21,37 +21,24 @@ namespace Chess.StockfishPlayer.Web.Controllers
         }
 
         [Route("")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }
 
         [HttpPost]
         [Route("StartGame")]
-        public IActionResult StartGame([FromBody] string difficulty)
+        public async Task<IActionResult> StartGame([FromBody] string difficulty)
         {
-            stockfishHelper.StartGame(int.Parse(difficulty));
+            await stockfishHelper.StartGame(int.Parse(difficulty));
             return Json(200);
-        }
-
-
-        [HttpPost]
-        [Route("MakeMoveWithTest")]
-        public IActionResult MakeMoveWithTest([FromBody] string moveString)
-        {
-            var result = stockfishHelper.MakeMove(moveString);
-
-            if (!string.IsNullOrEmpty(result))
-                return Json(result);
-            else
-                return Json(null);
         }
 
         [HttpPost]
         [Route("MakeMoveWithFEN")]
-        public IActionResult MakeMoveWithFEN([FromBody] string fenString)
+        public async Task<IActionResult> MakeMoveWithFEN([FromBody] string fenString)
         {
-            var result = stockfishHelper.MakeMoveWithFEN(fenString);
+            var result = await stockfishHelper.MakeMoveWithFEN(fenString);
 
             if (!string.IsNullOrEmpty(result))
                 return Json(result);

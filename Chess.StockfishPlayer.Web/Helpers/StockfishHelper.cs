@@ -17,20 +17,25 @@ namespace Chess.StockfishPlayer.Web.Helpers
             Stockfish = new Stockfish.NET.Core.Stockfish(path, depth: 2);
         }
 
-        public void StartGame(int difficulty)
+        public async Task StartGame(int difficulty)
         {
-            Stockfish.SkillLevel = difficulty;
+            await Task.Run(() => 
+                Stockfish.SkillLevel = difficulty
+            );
         }
 
-        public string MakeMoveWithFEN(string fenString)
+        public async Task<string> MakeMoveWithFEN(string fenString)
         {
             try
             {
-                Stockfish.SetFenPosition(fenString);
-                var bestMove = Stockfish.GetBestMove().Substring(0, 2) + "-" + Stockfish.GetBestMove().Substring(2, 2);
-                var visual = Stockfish.GetBoardVisual();
-                var fen = Stockfish.GetFenPosition();
-
+                var bestMove = string.Empty;
+                await Task.Run(() =>
+                {
+                    Stockfish.SetFenPosition(fenString);
+                    bestMove = Stockfish.GetBestMove().Substring(0, 2) + "-" + Stockfish.GetBestMove().Substring(2, 2);
+                    var visual = Stockfish.GetBoardVisual();
+                    var fen = Stockfish.GetFenPosition();
+                });
                 return bestMove;
             }
             catch (Exception ex)
@@ -39,32 +44,14 @@ namespace Chess.StockfishPlayer.Web.Helpers
             }
         }
 
-        public string GetBoardVisual()
+        public async Task<string> GetBoardVisual()
         {
-            var visual = Stockfish.GetBoardVisual();
+            var visual = string.Empty;
+            await Task.Run(() =>
+            {
+                visual = Stockfish.GetBoardVisual();
+            });
             return visual;
         }
-
-        public string MakeMove(string move)
-        {
-            Stockfish.SetPosition(move);
-            var visual = Stockfish.GetBoardVisual();
-
-            var bestMove = Stockfish.GetBestMove();
-            Stockfish.SetPosition(bestMove);
-            visual = Stockfish.GetBoardVisual();
-
-            bestMove = bestMove.Substring(0, 2) + "-" + bestMove.Substring(2, 2);
-
-            return bestMove;
-
-        }
-
-        public bool TestMove(string move)
-        {
-            var result = Stockfish.IsMoveCorrect(move);
-            return result;
-        }
-
     }
 }

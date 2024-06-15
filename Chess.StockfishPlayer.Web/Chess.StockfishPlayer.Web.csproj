@@ -10,4 +10,10 @@
     <ProjectReference Include="..\Stockfish.NET\Stockfish.NET.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="BinaryFiles\stockfish_20090216_x64.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
