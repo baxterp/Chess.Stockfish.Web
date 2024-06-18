@@ -40,9 +40,6 @@ function StartGame() {
     //showNotation: false,
   }
   board = Chessboard('myBoard', config);
-  var boardElecment = document.getElementById('myBoard');
-  boardElecment.style.width = '100px';
-
   const jsonData = {
     difficulty: difficulty.toString()
   };
@@ -131,8 +128,6 @@ function onDrop(source, target, piece, newPos, oldPos, orientation) {
 
         var moveFrom = data.substring(0, 2);
         var moveTo = data.substring(3);
-        //console.log('Move from: ' + moveFrom);
-        //console.log('Move to: ' + moveTo);
 
         move = game.move({
           from: moveFrom,
