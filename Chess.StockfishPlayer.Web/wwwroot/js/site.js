@@ -104,11 +104,18 @@ function onDrop(source, target, piece, newPos, oldPos, orientation) {
   if (oldPosition == newPosition)
     return false;
 
-  var testPosition = source + target;
   var reversePosition = target + "-" + source;
 
+  var newFen = game.fen();
+
+  console.log('Chess.js FEN Test: ' + newFen);
+  console.log('ChessBoard.js FEN Test: ' + newPosition);
+
+  console.log('Chess.js board layout - human move');
+  console.log(game.ascii());
+
   const jsonData = {
-    fenString: newPosition
+    fenString: newFen
   };
 
   ShowOverlay('Stockfish thinking...');
@@ -137,6 +144,9 @@ function onDrop(source, target, piece, newPos, oldPos, orientation) {
 
         console.log('computer move');
         console.log(move);
+
+        console.log('Chess.js board layout - computer move');
+        console.log(game.ascii());
 
         var inCheck = game.in_check();
         var inCheckmate = game.in_checkmate();

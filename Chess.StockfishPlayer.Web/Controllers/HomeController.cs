@@ -23,7 +23,7 @@ namespace Chess.StockfishPlayer.Web.Controllers
         [Route("")]
         public async Task<IActionResult> Index()
         {
-            return View();
+            return await Task.Run(() => View());
         }
 
         [HttpPost]

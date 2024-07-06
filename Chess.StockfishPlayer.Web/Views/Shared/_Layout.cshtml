@@ -3,12 +3,14 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Chess.StockfishPlayer.Web</title>
+    <title>@ViewData["Title"] - Stockfish.NET Chess Challenge</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @* <link href="~/lib/bootswatch/vapour/bootstrap.min.css" rel="stylesheet" /> *@
+    @* <link href="~/lib/bootswatch/solar/bootstrap.min.css" rel="stylesheet" /> *@
     <link rel="stylesheet" href="~/lib/chessboard/css/chessboard-1.0.0.css" />
-    
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Chess.StockfishPlayer.Web.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -28,11 +30,22 @@
     <footer class="border-top footer text-muted">
         <div class="container">
             <div class="row justify-content-md-center">
-                <div class="col-sm-6 col-md-6 col-lg-4">
-                    <h6 style="text-align:center; height:40px;padding-top:10px">&copy; 2024 - Baxter Pearson</h6>
+                <div class="col-sm-12 col-md-12 col-lg-8 d-flex justify-content-center align-items-center">
+                    <h6 class="mb-0" style="color: #B85042;">&copy; 2024 - Baxter Pearson</h6>
+                    <a href="https://github.com/baxterp" class="ms-1 icon-dark-grey" style="padding-left:15px" target="_blank">
+                        <i class="fab fa-github fa-lg"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/brpsoft/" class="ms-1 icon-dark-grey" style="padding-left:5px" target="_blank">
+                        <i class="fab fa-linkedin-in fa-lg"></i>
+                    </a>
+                    <a href="#" class="ms-1 icon-dark-grey" style="padding-left:5px" target="_blank">
+                        <i class="fab fa-twitter fa-lg"></i>
+                    </a>
                 </div>
             </div>
         </div>
+    </footer>
+
     </footer>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
